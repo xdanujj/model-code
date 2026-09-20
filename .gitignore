@@ -1,0 +1,6 @@
+content/
+argo/
+merged_argo_test.npz
+merged_glorys_full.h5
+merged_glorys.h5
+merged_inputs.npz
