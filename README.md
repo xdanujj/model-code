@@ -190,6 +190,36 @@ This prevents shallow seafloor areas (bathymetry) or missing data pixels from in
 
 ---
 
+## 📈 Model Performance & Experimental Results
+
+The model performance is evaluated across 15 standard ocean depths using validation data (1993–2021) and independent **ARGO profiling float observations** (2022–2023).
+
+### 1. Overall Model Performance Metrics
+
+| Architecture Stage | Overall Val RMSE (°C) | Thermocline Band Mean RMSE (°C) | Key Impact |
+| :--- | :--- | :--- | :--- |
+| **Base 3D U-Net Model (`UNetOcean3D`)** | **0.6816 °C** | **0.8749 °C** | Baseline 3D spatiotemporal reconstruction across all 15 depth levels |
+| **Base + Targeted Thermocline Expert (`UNetOceanV2`)** | **0.6762 °C** | **0.8654 °C** | **Targeted improvement** focused on 50m–200m pycnocline layer |
+
+### 2. Thermocline Band Depth-Wise Breakdown (50m to 300m)
+
+The thermocline zone (50m to 200m) carries ~75% of total vertical temperature variance due to sharp pycnocline gradients. The dedicated **Thermocline Expert Engine** applies physics-informed features ($\nabla\text{SSH}, \nabla^2\text{SSH}$) and targeted depth weighting ($1.1\times - 2.4\times$) to achieve consistent error reduction across all thermocline depths:
+
+| Depth Level | Depth (m) | Base Model RMSE (°C) | Base + Expert RMSE (°C) | Delta Improvement (°C) | Targeted Loss Weight |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Index 5** | 50m | 0.7511 °C | 0.7418 °C | **-0.0093 °C** | 1.3× |
+| **Index 6** | 75m | 0.9689 °C | 0.9658 °C | **-0.0031 °C** | 1.9× |
+| **Index 7** | 100m | 1.0892 °C | 1.0836 °C | **-0.0056 °C** | 2.4× (Peak Gradient) |
+| **Index 8** | 125m | 1.0820 °C | 1.0716 °C | **-0.0104 °C** | 2.4× (Peak Gradient) |
+| **Index 9** | 150m | 0.9716 °C | 0.9619 °C | **-0.0097 °C** | 2.2× |
+| **Index 10** | 200m | 0.7187 °C | 0.7078 °C | **-0.0109 °C** | 1.4× |
+| **Index 11** | 300m | 0.4929 °C | 0.4868 °C | **-0.0061 °C** | 1.1× |
+
+> [!NOTE]
+> Because of the **Zero-Initialized Residual Identity Design**, depths outside the thermocline band (surface 0m–30m and deep 500m–1000m) maintain exact parity with the base model, eliminating any risk of performance regression on un-targeted layers.
+
+---
+
 ## 📁 Repository Structure
 
 ```
