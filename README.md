@@ -1,6 +1,5 @@
 # 🌊 Satellite Embedding-Based Deep Learning Framework for Subsurface Ocean Temperature Reconstruction
-
-> **Problem Statement ID:** 26066  
+ 
 > **Organization:** Ministry of Earth Sciences (MoES) | Indian National Centre for Ocean Information Services (INCOIS)  
 > **Target Domain:** North Indian Ocean (5°N to 30°N, 45°E to 105°E)  
 > **Resolution:** 0.25° × 0.25° Spatial Grid | Daily Temporal Resolution  
